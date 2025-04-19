@@ -1,0 +1,12 @@
+package shop.itcontest17.stdev2025_13.member.application;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+public class MemberService {
+
+}
