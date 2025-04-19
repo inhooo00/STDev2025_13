@@ -1,11 +1,14 @@
+// HuggingFaceImageService.java
 package shop.itcontest17.stdev2025_13.imageai.application;
 
-import java.util.Base64;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import shop.itcontest17.stdev2025_13.imageai.api.dto.request.TextToImageReqDto;
+import shop.itcontest17.stdev2025_13.imageai.api.dto.response.ImageResDto;
+
+import java.util.Base64;
 
 @Service
 @RequiredArgsConstructor
@@ -14,9 +17,9 @@ public class HuggingFaceImageService {
     private final WebClient huggingFaceWebClient;
     private final AiService aiService;
 
-    public String generateImageBase64(String prompt) {
+    public ImageResDto generateImageBase64(String prompt) {
         String translatedPrompt = aiService.translateToEnglishIfNeeded(prompt);
-        System.out.println(translatedPrompt);
+
         byte[] imageBytes = huggingFaceWebClient.post()
                 .bodyValue(new TextToImageReqDto(translatedPrompt))
                 .retrieve()
@@ -31,6 +34,7 @@ public class HuggingFaceImageService {
             throw new RuntimeException("Image generation failed.");
         }
 
-        return Base64.getEncoder().encodeToString(imageBytes);
+        String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+        return new ImageResDto(base64Image);
     }
 }
