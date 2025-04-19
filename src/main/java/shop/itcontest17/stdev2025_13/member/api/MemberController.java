@@ -50,6 +50,12 @@ public class MemberController implements MemberDocs{
                 memberService.getProcessDetailBySummaryTitle(reqDto));
     }
 
+    @GetMapping("/process-detail/all")
+    public RspTemplate<List<ProcessDetail>> getProcessDetailAll(@CurrentUserEmail String email) {
+        return new RspTemplate<>(HttpStatus.OK,
+                "프로세스 상세정보 반환 성공",
+                memberService.getProcessDetailByEmail(email));
+    }
 
     @GetMapping("/name")
     public RspTemplate<MemberNameResDto> getName(@CurrentUserEmail String email) {

@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import shop.itcontest17.stdev2025_13.member.api.dto.response.MemberNameResDto;
 import shop.itcontest17.stdev2025_13.member.domain.Member;
+import shop.itcontest17.stdev2025_13.process.domain.Processes;
 
 public interface MemberRepository extends
         JpaRepository<Member, Long>,

@@ -12,7 +12,9 @@ import shop.itcontest17.stdev2025_13.member.api.dto.response.EmotionCountResDto;
 import shop.itcontest17.stdev2025_13.member.api.dto.response.ArchiveResDto;
 import shop.itcontest17.stdev2025_13.member.api.dto.response.MemberNameResDto;
 import shop.itcontest17.stdev2025_13.member.api.dto.response.ProcessDetail;
+import shop.itcontest17.stdev2025_13.member.domain.Member;
 import shop.itcontest17.stdev2025_13.member.domain.repository.MemberRepository;
+import shop.itcontest17.stdev2025_13.member.exception.MemberNotFoundException;
 import shop.itcontest17.stdev2025_13.process.domain.Processes;
 import shop.itcontest17.stdev2025_13.process.domain.repository.ProcessesRepository;
 
@@ -47,6 +49,26 @@ public class MemberService {
                 .summaryTitle(processes.getSummaryTitle())
                 .build();
     }
+
+    public List<ProcessDetail> getProcessDetailByEmail(String email) {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(MemberNotFoundException::new);
+
+        List<Processes> processesList = processesRepository.findAllByMember(member);
+
+        return processesList.stream()
+                .map(processes -> ProcessDetail.builder()
+                        .emotion(processes.getEmotion())
+                        .question(processes.getQuestion())
+                        .answer(processes.getAnswer())
+                        .summary(processes.getSummary())
+                        .image(processes.getImage())
+                        .firstResult(processes.getFirstResult())
+                        .summaryTitle(processes.getSummaryTitle())
+                        .build())
+                .toList();
+    }
+
 
     public MemberNameResDto getMemberNameByEmail(String email) {
         return memberRepository.findNameByEmail(email);

@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import shop.itcontest17.stdev2025_13.member.api.dto.response.EmotionCountResDto;
 import shop.itcontest17.stdev2025_13.member.api.dto.response.ArchiveResDto;
+import shop.itcontest17.stdev2025_13.member.domain.Member;
 import shop.itcontest17.stdev2025_13.process.domain.Processes;
 
 public interface ProcessesRepository extends JpaRepository<Processes, Long>, ProcessesCustomRepository {
@@ -24,4 +25,6 @@ public interface ProcessesRepository extends JpaRepository<Processes, Long>, Pro
     List<ArchiveResDto> findSummaryTitleByEmailAndEmotion(@Param("email") String email, @Param("emotion") String emotion);
 
     Processes findBySummaryTitle(String summaryTitle);
+
+    List<Processes> findAllByMember(Member member);
 }
