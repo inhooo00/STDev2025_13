@@ -1,12 +1,11 @@
-package shop.itcontest17.itcontest17.stable.image;
+package shop.itcontest17.stdev2025_13.imageai.application;
 
+import java.util.Base64;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-
-import java.util.Base64;
-import shop.itcontest17.itcontest17.ai.AiService;
+import shop.itcontest17.stdev2025_13.imageai.api.dto.request.TextToImageReqDto;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +18,7 @@ public class HuggingFaceImageService {
         String translatedPrompt = aiService.translateToEnglishIfNeeded(prompt);
         System.out.println(translatedPrompt);
         byte[] imageBytes = huggingFaceWebClient.post()
-                .bodyValue(new TextToImageRequest(translatedPrompt))
+                .bodyValue(new TextToImageReqDto(translatedPrompt))
                 .retrieve()
                 .bodyToMono(byte[].class)
                 .onErrorResume(e -> {
