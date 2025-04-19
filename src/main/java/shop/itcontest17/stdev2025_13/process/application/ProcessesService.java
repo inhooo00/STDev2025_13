@@ -19,6 +19,7 @@ import shop.itcontest17.stdev2025_13.process.api.dto.request.SubmitAnswerReqDto;
 import shop.itcontest17.stdev2025_13.process.api.dto.response.EmotionResDto;
 import shop.itcontest17.stdev2025_13.process.api.dto.response.GenerateQuestionResDto;
 import shop.itcontest17.stdev2025_13.process.api.dto.response.SubmitAnswerResDto;
+import shop.itcontest17.stdev2025_13.process.api.dto.response.SummaryResDto;
 import shop.itcontest17.stdev2025_13.process.domain.Processes;
 import shop.itcontest17.stdev2025_13.process.domain.repository.ProcessesRepository;
 import shop.itcontest17.stdev2025_13.process.exception.ProcessesNotFoundException;
@@ -39,6 +40,12 @@ public class ProcessesService {
 
     @Value("${questions.first-result}")
     private String firstResultPrompt;
+
+    @Value("${questions.image}")
+    private String imagePrompt;
+
+    @Value("${questions.summary}")
+    private String summaryPrompt;
 
     @Transactional
     public EmotionResDto saveEmotion(String email, EmotionReqDto emotionReqDto) {
@@ -98,8 +105,7 @@ public class ProcessesService {
                         + "내 질문은:" + process.getEmotion() + "\n"
                         + "내 대답은:" + process.getAnswer() + "\n"
                         + "AI의 결론은:" + process.getFirstResult() + "\n"
-                        + "위 과정들을 토대로 그릴 캐릭터 명령어를 생성해줘. " + "\n"
-                        + "캐릭터는 감정이 드러나야 해. " + "\n";
+                        + imagePrompt;
 
         ChatResponse chatResponse = aiService.callChat(bettaPrompt);
         log.info(chatResponse.getResult().getOutput().getContent());
@@ -108,5 +114,22 @@ public class ProcessesService {
                 huggingFaceImageService.generateImageBase64(chatResponse.getResult().getOutput().getContent())
                         .getBase64());
         return new ImageResDto(process.getImage());
+    }
+
+    @Transactional
+    public SummaryResDto updateSummary(Long processId) {
+        Processes process = processesRepository.findById(processId)
+                .orElseThrow(ProcessesNotFoundException::new);
+
+        ChatResponse chatResponse = aiService.callChat(
+                "내 감정은:" + process.getEmotion() + "\n"
+                        + "내 질문은:" + process.getEmotion() + "\n"
+                        + "내 대답은:" + process.getAnswer() + "\n"
+                        + "AI의 결론은:" + process.getFirstResult()  + "\n"
+                        + summaryPrompt);
+
+        process.updateSummary(chatResponse.getResult().getOutput().getContent());
+
+        return new SummaryResDto(process.getSummary());
     }
 }

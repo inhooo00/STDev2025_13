@@ -16,6 +16,7 @@ import shop.itcontest17.stdev2025_13.process.api.dto.request.SubmitAnswerReqDto;
 import shop.itcontest17.stdev2025_13.process.api.dto.response.EmotionResDto;
 import shop.itcontest17.stdev2025_13.process.api.dto.response.GenerateQuestionResDto;
 import shop.itcontest17.stdev2025_13.process.api.dto.response.SubmitAnswerResDto;
+import shop.itcontest17.stdev2025_13.process.api.dto.response.SummaryResDto;
 import shop.itcontest17.stdev2025_13.process.application.ProcessesService;
 
 @RestController
@@ -53,5 +54,12 @@ public class ProcessesController {
         return new RspTemplate<>(HttpStatus.OK,
                 "ai가 반환한 이미지 저장 성공",
                 processesService.generateImage(processId));
+    }
+
+    @PatchMapping("{processId}/summary")
+    public RspTemplate<SummaryResDto> updateSummary(@PathVariable Long processId) {
+        return new RspTemplate<>(HttpStatus.OK,
+                "ai가 반환한 이미지 저장 성공",
+                processesService.updateSummary(processId));
     }
 }
