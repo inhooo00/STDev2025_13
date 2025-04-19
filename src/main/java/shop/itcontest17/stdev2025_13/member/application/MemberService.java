@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shop.itcontest17.stdev2025_13.member.api.dto.request.EmotionReqDto;
-import shop.itcontest17.stdev2025_13.member.api.dto.request.ImageReqDto;
+import shop.itcontest17.stdev2025_13.member.api.dto.request.SummaryTitleReqDto;
 import shop.itcontest17.stdev2025_13.member.api.dto.response.EmotionCountResDto;
 import shop.itcontest17.stdev2025_13.member.api.dto.response.ArchiveResDto;
 import shop.itcontest17.stdev2025_13.member.api.dto.response.MemberNameResDto;
@@ -34,8 +34,8 @@ public class MemberService {
         return processesRepository.findSummaryTitleByEmailAndEmotion(email, emotionReqDto.emotion());
     }
 
-    public ProcessDetail getProcessDetailByImage(ImageReqDto imageReqDto) {
-        Processes processes = processesRepository.findByImage(imageReqDto.base64());
+    public ProcessDetail getProcessDetailBySummaryTitle(SummaryTitleReqDto summaryTitleReqDto) {
+        Processes processes = processesRepository.findBySummaryTitle(summaryTitleReqDto.summaryTitle());
 
         return ProcessDetail.builder()
                 .emotion(processes.getEmotion())

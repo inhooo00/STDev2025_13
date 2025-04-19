@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import shop.itcontest17.stdev2025_13.global.annotation.CurrentUserEmail;
 import shop.itcontest17.stdev2025_13.global.template.RspTemplate;
 import shop.itcontest17.stdev2025_13.member.api.dto.request.EmotionReqDto;
-import shop.itcontest17.stdev2025_13.member.api.dto.request.ImageReqDto;
+import shop.itcontest17.stdev2025_13.member.api.dto.request.SummaryTitleReqDto;
 import shop.itcontest17.stdev2025_13.member.api.dto.response.EmotionCountResDto;
 import shop.itcontest17.stdev2025_13.member.api.dto.response.ArchiveResDto;
 import shop.itcontest17.stdev2025_13.member.api.dto.response.MemberNameResDto;
@@ -41,10 +41,10 @@ public class MemberController implements MemberDocs{
     }
 
     @GetMapping("/process-detail")
-    public RspTemplate<ProcessDetail> getProcessDetail(@RequestBody ImageReqDto imageReqDto) {
+    public RspTemplate<ProcessDetail> getProcessDetail(@RequestBody SummaryTitleReqDto summaryTitleReqDto) {
         return new RspTemplate<>(HttpStatus.OK,
                 "프로세스 상세정보 반환 성공",
-                memberService.getProcessDetailByImage(imageReqDto));
+                memberService.getProcessDetailBySummaryTitle(summaryTitleReqDto));
     }
 
     @GetMapping("/name")

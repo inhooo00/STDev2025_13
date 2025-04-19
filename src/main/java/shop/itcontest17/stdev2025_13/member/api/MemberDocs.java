@@ -10,7 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import shop.itcontest17.stdev2025_13.global.template.RspTemplate;
 import shop.itcontest17.stdev2025_13.member.api.dto.request.EmotionReqDto;
-import shop.itcontest17.stdev2025_13.member.api.dto.request.ImageReqDto;
+import shop.itcontest17.stdev2025_13.member.api.dto.request.SummaryTitleReqDto;
 import shop.itcontest17.stdev2025_13.member.api.dto.response.EmotionCountResDto;
 import shop.itcontest17.stdev2025_13.member.api.dto.response.ArchiveResDto;
 import shop.itcontest17.stdev2025_13.member.api.dto.response.MemberNameResDto;
@@ -51,7 +51,7 @@ public interface MemberDocs {
                     @ApiResponse(responseCode = "500", description = "서버 오류")
             })
     RspTemplate<ProcessDetail> getProcessDetail(
-            @Parameter(description = "이미지 요청 DTO", required = true) ImageReqDto imageReqDto);
+            @Parameter(description = "이미지 요청 DTO", required = true) SummaryTitleReqDto summaryTitleReqDto);
 
     @Operation(summary = "유저 이름 조회", description = "유저 이름을 조회합니다.",
             responses = {

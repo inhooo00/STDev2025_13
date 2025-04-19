@@ -23,7 +23,5 @@ public interface ProcessesRepository extends JpaRepository<Processes, Long>, Pro
             "WHERE p.member.email = :email AND p.emotion = :emotion")
     List<ArchiveResDto> findSummaryTitleByEmailAndEmotion(@Param("email") String email, @Param("emotion") String emotion);
 
-
-
-    Processes findByImage(String image);
+    Processes findBySummaryTitle(String summaryTitle);
 }
