@@ -15,14 +15,14 @@ import shop.itcontest17.stdev2025_13.member.api.dto.response.EmotionCountResDto;
 import shop.itcontest17.stdev2025_13.member.api.dto.response.ImageResDto;
 import shop.itcontest17.stdev2025_13.member.api.dto.response.ProcessDetail;
 import shop.itcontest17.stdev2025_13.member.application.MemberService;
-import shop.itcontest17.stdev2025_13.process.api.dto.response.EmotionResDto;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/members")
-public class MemberController {
+public class MemberController implements MemberDocs{
 
     private final MemberService memberService;
+
 
     @GetMapping("/top-emotions")
     public RspTemplate<List<EmotionCountResDto>> getTopEmotions(@CurrentUserEmail String email) {
