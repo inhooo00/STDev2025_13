@@ -11,6 +11,7 @@ import shop.itcontest17.stdev2025_13.member.api.dto.request.EmotionReqDto;
 import shop.itcontest17.stdev2025_13.member.api.dto.request.ImageReqDto;
 import shop.itcontest17.stdev2025_13.member.api.dto.response.EmotionCountResDto;
 import shop.itcontest17.stdev2025_13.member.api.dto.response.ImageResDto;
+import shop.itcontest17.stdev2025_13.member.api.dto.response.MemberNameResDto;
 import shop.itcontest17.stdev2025_13.member.api.dto.response.ProcessDetail;
 import shop.itcontest17.stdev2025_13.member.domain.repository.MemberRepository;
 import shop.itcontest17.stdev2025_13.process.domain.Processes;
@@ -22,6 +23,7 @@ import shop.itcontest17.stdev2025_13.process.domain.repository.ProcessesReposito
 public class MemberService {
 
     private final ProcessesRepository processesRepository;
+    private final MemberRepository memberRepository;
 
     public List<EmotionCountResDto> getTop5EmotionsByEmail(String email) {
         Pageable top5 = PageRequest.of(0, 5);
@@ -44,5 +46,9 @@ public class MemberService {
                 .image(processes.getImage())
                 .firstResult(processes.getFirstResult())
                 .build();
+    }
+
+    public MemberNameResDto getMemberNameByEmail(String email) {
+        return memberRepository.findNameByEmail(email);
     }
 }

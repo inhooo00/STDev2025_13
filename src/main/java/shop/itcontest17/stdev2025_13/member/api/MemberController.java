@@ -13,6 +13,7 @@ import shop.itcontest17.stdev2025_13.member.api.dto.request.EmotionReqDto;
 import shop.itcontest17.stdev2025_13.member.api.dto.request.ImageReqDto;
 import shop.itcontest17.stdev2025_13.member.api.dto.response.EmotionCountResDto;
 import shop.itcontest17.stdev2025_13.member.api.dto.response.ImageResDto;
+import shop.itcontest17.stdev2025_13.member.api.dto.response.MemberNameResDto;
 import shop.itcontest17.stdev2025_13.member.api.dto.response.ProcessDetail;
 import shop.itcontest17.stdev2025_13.member.application.MemberService;
 
@@ -44,5 +45,12 @@ public class MemberController implements MemberDocs{
         return new RspTemplate<>(HttpStatus.OK,
                 "프로세스 상세정보 반환 성공",
                 memberService.getProcessDetailByImage(imageReqDto));
+    }
+
+    @GetMapping("/name")
+    public RspTemplate<MemberNameResDto> getName(@CurrentUserEmail String email) {
+        return new RspTemplate<>(HttpStatus.OK,
+                "이름 반환 성공",
+                memberService.getMemberNameByEmail(email));
     }
 }
