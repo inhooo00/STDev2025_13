@@ -1,6 +1,6 @@
 package shop.itcontest17.stdev2025_13.member.exception;
 
-import shop.itcontest17.itcontest17.global.error.exception.NotFoundGroupException;
+import shop.itcontest17.stdev2025_13.global.error.exception.NotFoundGroupException;
 
 public class MemberNotFoundException extends NotFoundGroupException {
     public MemberNotFoundException(String message) {

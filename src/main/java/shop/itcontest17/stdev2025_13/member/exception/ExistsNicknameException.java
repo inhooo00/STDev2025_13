@@ -1,6 +1,6 @@
 package shop.itcontest17.stdev2025_13.member.exception;
 
-import shop.itcontest17.itcontest17.global.error.exception.InvalidGroupException;
+import shop.itcontest17.stdev2025_13.global.error.exception.InvalidGroupException;
 
 public class ExistsNicknameException extends InvalidGroupException {
     public ExistsNicknameException(String message) {
