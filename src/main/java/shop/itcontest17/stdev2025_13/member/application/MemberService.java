@@ -50,20 +50,15 @@ public class MemberService {
                 .build();
     }
 
-    public List<ProcessDetail> getProcessDetailByEmail(String email) {
+    public List<ArchiveResDto> getProcessDetailByEmail(String email) {
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(MemberNotFoundException::new);
 
         List<Processes> processesList = processesRepository.findAllByMember(member);
 
         return processesList.stream()
-                .map(processes -> ProcessDetail.builder()
-                        .emotion(processes.getEmotion())
-                        .question(processes.getQuestion())
-                        .answer(processes.getAnswer())
-                        .summary(processes.getSummary())
-                        .image(processes.getImage())
-                        .firstResult(processes.getFirstResult())
+                .map(processes -> ArchiveResDto.builder()
+                        .createdAt(processes.getCreatedAt())
                         .summaryTitle(processes.getSummaryTitle())
                         .build())
                 .toList();

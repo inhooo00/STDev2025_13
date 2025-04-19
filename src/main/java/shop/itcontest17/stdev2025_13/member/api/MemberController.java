@@ -51,7 +51,7 @@ public class MemberController implements MemberDocs{
     }
 
     @GetMapping("/process-detail/all")
-    public RspTemplate<List<ProcessDetail>> getProcessDetailAll(@CurrentUserEmail String email) {
+    public RspTemplate<List<ArchiveResDto>> getProcessDetailAll(@CurrentUserEmail String email) {
         return new RspTemplate<>(HttpStatus.OK,
                 "프로세스 상세정보 반환 성공",
                 memberService.getProcessDetailByEmail(email));
