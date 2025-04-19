@@ -1,12 +1,15 @@
 package shop.itcontest17.stdev2025_13.process.application;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.ChatResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shop.itcontest17.stdev2025_13.global.entity.Status;
+import shop.itcontest17.stdev2025_13.imageai.api.dto.response.ImageResDto;
 import shop.itcontest17.stdev2025_13.imageai.application.AiService;
+import shop.itcontest17.stdev2025_13.imageai.application.HuggingFaceImageService;
 import shop.itcontest17.stdev2025_13.member.domain.Member;
 import shop.itcontest17.stdev2025_13.member.domain.repository.MemberRepository;
 import shop.itcontest17.stdev2025_13.member.exception.MemberNotFoundException;
@@ -20,6 +23,7 @@ import shop.itcontest17.stdev2025_13.process.domain.Processes;
 import shop.itcontest17.stdev2025_13.process.domain.repository.ProcessesRepository;
 import shop.itcontest17.stdev2025_13.process.exception.ProcessesNotFoundException;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -28,6 +32,7 @@ public class ProcessesService {
     private final ProcessesRepository processesRepository;
     private final MemberRepository memberRepository;
     private final AiService aiService;
+    private final HuggingFaceImageService huggingFaceImageService;
 
     @Value("${questions.question}")
     private String questionPrompt;
@@ -83,4 +88,25 @@ public class ProcessesService {
         return new SubmitAnswerResDto(process.getFirstResult());
     }
 
+    @Transactional
+    public ImageResDto generateImage(Long processId) {
+        Processes process = processesRepository.findById(processId)
+                .orElseThrow(ProcessesNotFoundException::new);
+
+        String bettaPrompt =
+                "내 감정은:" + process.getEmotion() + "\n"
+                        + "내 질문은:" + process.getEmotion() + "\n"
+                        + "내 대답은:" + process.getAnswer() + "\n"
+                        + "AI의 결론은:" + process.getFirstResult() + "\n"
+                        + "위 과정들을 토대로 그릴 캐릭터 명령어를 생성해줘. " + "\n"
+                        + "캐릭터는 감정이 드러나야 해. " + "\n";
+
+        ChatResponse chatResponse = aiService.callChat(bettaPrompt);
+        log.info(chatResponse.getResult().getOutput().getContent());
+
+        process.updateImage(
+                huggingFaceImageService.generateImageBase64(chatResponse.getResult().getOutput().getContent())
+                        .getBase64());
+        return new ImageResDto(process.getImage());
+    }
 }

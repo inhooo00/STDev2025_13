@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import shop.itcontest17.stdev2025_13.global.annotation.CurrentUserEmail;
 import shop.itcontest17.stdev2025_13.global.template.RspTemplate;
+import shop.itcontest17.stdev2025_13.imageai.api.dto.response.ImageResDto;
 import shop.itcontest17.stdev2025_13.process.api.dto.request.EmotionReqDto;
 import shop.itcontest17.stdev2025_13.process.api.dto.request.SubmitAnswerReqDto;
 import shop.itcontest17.stdev2025_13.process.api.dto.response.EmotionResDto;
@@ -45,5 +46,12 @@ public class ProcessesController {
         return new RspTemplate<>(HttpStatus.OK,
                 "ai가 반환한 결과 저장 성공",
                 processesService.submitAnswer(processId, submitAnswerReqDto));
+    }
+
+    @PatchMapping("{processId}/image")
+    public RspTemplate<ImageResDto> updateImage(@PathVariable Long processId) {
+        return new RspTemplate<>(HttpStatus.OK,
+                "ai가 반환한 이미지 저장 성공",
+                processesService.generateImage(processId));
     }
 }
