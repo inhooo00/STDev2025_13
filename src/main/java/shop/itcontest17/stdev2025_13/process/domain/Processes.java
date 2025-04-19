@@ -12,7 +12,7 @@ import shop.itcontest17.stdev2025_13.global.entity.Status;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Process extends BaseEntity {
+public class Processes extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private Status status;
@@ -30,7 +30,7 @@ public class Process extends BaseEntity {
     private String summary;
 
     @Builder
-    private Process(Status status,
+    private Processes(Status status,
                     String emotion, String question,
                     String answer, String firstResult,
                     String image, String summary
