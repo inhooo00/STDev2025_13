@@ -17,6 +17,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import shop.itcontest17.stdev2025_13.auth.api.dto.response.IdTokenAndAccessTokenResponse;
+import shop.itcontest17.stdev2025_13.auth.api.dto.response.IdTokenResDto;
 import shop.itcontest17.stdev2025_13.auth.api.dto.response.UserInfo;
 import shop.itcontest17.stdev2025_13.auth.application.AuthService;
 import shop.itcontest17.stdev2025_13.global.oauth.exception.OAuthException;
@@ -42,7 +43,7 @@ public class KakaoAuthService implements AuthService {
         this.restTemplate = restTemplate;
     }
 
-    public IdTokenAndAccessTokenResponse getIdToken(String code) {
+    public IdTokenResDto getIdToken(String code) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
 
@@ -64,12 +65,9 @@ public class KakaoAuthService implements AuthService {
         if (response.getStatusCode().is2xxSuccessful()) {
             try {
                 JsonNode jsonNode = objectMapper.readTree(response.getBody());
-                return new IdTokenAndAccessTokenResponse(
-                        jsonNode.get("access_token").asText(),
-                        jsonNode.get("id_token").asText()
-                );
+                return new IdTokenResDto(jsonNode.get("id_token"));
             } catch (Exception e) {
-                throw new RuntimeException("카카오 토큰 파싱 실패", e);
+                throw new RuntimeException("ID 토큰을 파싱하는데 실패했습니다.", e);
             }
         }
 

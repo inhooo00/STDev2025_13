@@ -1,6 +1,6 @@
 package shop.itcontest17.stdev2025_13.auth.application;
 
-import shop.itcontest17.stdev2025_13.auth.api.dto.response.IdTokenAndAccessTokenResponse;
+import shop.itcontest17.stdev2025_13.auth.api.dto.response.IdTokenResDto;
 import shop.itcontest17.stdev2025_13.auth.api.dto.response.UserInfo;
 
 public interface AuthService {
@@ -8,5 +8,5 @@ public interface AuthService {
 
     String getProvider();
 
-    IdTokenAndAccessTokenResponse getIdToken(String code);
+    IdTokenResDto getIdToken(String code);
 }

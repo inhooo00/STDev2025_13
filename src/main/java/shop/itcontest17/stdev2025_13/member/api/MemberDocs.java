@@ -8,11 +8,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+import shop.itcontest17.stdev2025_13.global.annotation.CurrentUserEmail;
 import shop.itcontest17.stdev2025_13.global.template.RspTemplate;
 import shop.itcontest17.stdev2025_13.member.api.dto.request.EmotionReqDto;
 import shop.itcontest17.stdev2025_13.member.api.dto.request.ImageReqDto;
 import shop.itcontest17.stdev2025_13.member.api.dto.response.EmotionCountResDto;
 import shop.itcontest17.stdev2025_13.member.api.dto.response.ImageResDto;
+import shop.itcontest17.stdev2025_13.member.api.dto.response.MemberNameResDto;
 import shop.itcontest17.stdev2025_13.member.api.dto.response.ProcessDetail;
 
 @Tag(name = "[멤버 API]", description = "멤버 관련 API")
@@ -51,4 +53,15 @@ public interface MemberDocs {
             })
     RspTemplate<ProcessDetail> getProcessDetail(
             @Parameter(description = "이미지 요청 DTO", required = true) ImageReqDto imageReqDto);
+
+    @Operation(summary = "유저 이름 조회", description = "유저 이름을 조회합니다.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "유저 이름 조회 성공",
+                            content = @Content(schema = @Schema(implementation = MemberNameResDto.class))),
+                    @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+                    @ApiResponse(responseCode = "401", description = "인증 실패"),
+                    @ApiResponse(responseCode = "500", description = "서버 오류")
+            })
+    RspTemplate<MemberNameResDto> getName(
+            @Parameter(description = "로그인한 유저 이메일 (JWT에서 추출)", hidden = true) String email);
 }
