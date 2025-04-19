@@ -87,7 +87,9 @@ public class ProcessesService {
         // 유저 답변 저장
         process.updateAnswer(reqDto.answer());
 
-        ChatResponse chatResponse = aiService.callChat(firstResultPrompt + process.getAnswer());
+        ChatResponse chatResponse = aiService.callChat(
+                firstResultPrompt + process.getQuestion() + "\n"
+                        + "답변은 : " + process.getAnswer());
 
         // AI 답변 저장
         process.updateFirstResult(chatResponse.getResult().getOutput().getContent());
@@ -111,8 +113,10 @@ public class ProcessesService {
         log.info(chatResponse.getResult().getOutput().getContent());
 
         process.updateImage(
-                huggingFaceImageService.generateImageBase64(chatResponse.getResult().getOutput().getContent())
-                        .getBase64());
+                huggingFaceImageService.generateImageBase64(
+                                aiService.translateToEnglishIfNeeded(
+                                        chatResponse.getResult().getOutput().getContent())).getBase64());
+
         return new ImageResDto(process.getImage());
     }
 
@@ -125,7 +129,7 @@ public class ProcessesService {
                 "내 감정은:" + process.getEmotion() + "\n"
                         + "내 질문은:" + process.getEmotion() + "\n"
                         + "내 대답은:" + process.getAnswer() + "\n"
-                        + "AI의 결론은:" + process.getFirstResult()  + "\n"
+                        + "AI의 결론은:" + process.getFirstResult() + "\n"
                         + summaryPrompt);
 
         process.updateSummary(chatResponse.getResult().getOutput().getContent());
