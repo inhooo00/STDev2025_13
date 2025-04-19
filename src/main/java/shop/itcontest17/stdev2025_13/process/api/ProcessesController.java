@@ -22,12 +22,12 @@ import shop.itcontest17.stdev2025_13.process.application.ProcessesService;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/processes")
-public class ProcessesController {
+public class ProcessesController implements ProcessesDocs{
 
     private final ProcessesService processesService;
 
     @PostMapping("/emotion")
-    public RspTemplate<EmotionResDto> send(@CurrentUserEmail String email,
+    public RspTemplate<EmotionResDto> createProcesses(@CurrentUserEmail String email,
                                            @RequestBody EmotionReqDto emotionReqDto) {
         return new RspTemplate<>(HttpStatus.OK,
                 "감정 저장 성공",
