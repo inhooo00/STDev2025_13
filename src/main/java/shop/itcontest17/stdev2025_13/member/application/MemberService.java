@@ -44,6 +44,7 @@ public class MemberService {
                 .summary(processes.getSummary())
                 .image(processes.getImage())
                 .firstResult(processes.getFirstResult())
+                .summaryTitle(processes.getSummaryTitle())
                 .build();
     }
 

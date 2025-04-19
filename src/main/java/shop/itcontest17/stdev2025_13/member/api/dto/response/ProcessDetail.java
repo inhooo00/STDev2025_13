@@ -10,7 +10,8 @@ public record ProcessDetail(
         String answer,
         String firstResult,
         String image,
-        String summary
+        String summary,
+        String summaryTitle
 ) {
     public static ProcessDetail fromEntity(Processes processes) {
         return new ProcessDetail(
@@ -19,7 +20,8 @@ public record ProcessDetail(
                 processes.getAnswer(),
                 processes.getFirstResult(),
                 processes.getImage(),
-                processes.getSummary()
+                processes.getSummary(),
+                processes.getSummaryTitle()
         );
     }
 }
