@@ -30,9 +30,9 @@ public interface MemberDocs {
     RspTemplate<List<EmotionCountResDto>> getTopEmotions(
             @Parameter(description = "로그인한 유저 이메일 (JWT에서 추출)", hidden = true) String email);
 
-    @Operation(summary = "감정으로 생성한 이미지 목록 조회", description = "선택한 감정에 해당하는 생성된 이미지를 조회합니다.",
+    @Operation(summary = "감정으로 일기 제목 목록 조회", description = "일기 제목 목록을 조회합니다.",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "이미지 조회 성공",
+                    @ApiResponse(responseCode = "200", description = "제목 조회 성공",
                             content = @Content(array = @ArraySchema(schema = @Schema(implementation = ArchiveResDto.class)))),
                     @ApiResponse(responseCode = "400", description = "잘못된 요청"),
                     @ApiResponse(responseCode = "401", description = "인증 실패"),
@@ -42,7 +42,7 @@ public interface MemberDocs {
             @Parameter(description = "로그인한 유저 이메일 (JWT에서 추출)", hidden = true) String email,
             @Parameter(description = "감정 요청 DTO", required = true) EmotionReqDto emotionReqDto);
 
-    @Operation(summary = "이미지로 프로세스 상세 정보 조회", description = "이미지를 기준으로 해당 프로세스의 상세 정보를 조회합니다.",
+    @Operation(summary = "이미지로 프로세스 상세 정보 조회", description = "일기 제목을 기준으로 해당 프로세스의 상세 정보를 조회합니다.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "프로세스 상세 조회 성공",
                             content = @Content(schema = @Schema(implementation = ProcessDetail.class))),
