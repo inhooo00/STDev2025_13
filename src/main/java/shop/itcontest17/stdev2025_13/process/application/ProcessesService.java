@@ -107,9 +107,9 @@ public class ProcessesService {
         log.info(chatResponse.getResult().getOutput().getContent());
 
         process.updateImage(
-                huggingFaceImageService.generateImageBase64(
+                aiService.generateImageUrl(
                         aiService.translateToEnglishIfNeeded(
-                                chatResponse.getResult().getOutput().getContent())).getBase64());
+                                chatResponse.getResult().getOutput().getContent())));
 
         return new ImageResDto(process.getImage());
     }
