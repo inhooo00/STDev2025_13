@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import shop.itcontest17.stdev2025_13.global.annotation.CurrentUserEmail;
 import shop.itcontest17.stdev2025_13.global.template.RspTemplate;
@@ -34,18 +35,21 @@ public class MemberController implements MemberDocs{
 
     @GetMapping("/my-summary")
     public RspTemplate<List<ArchiveResDto>> getMyImages(@CurrentUserEmail String email,
-                                                        @RequestBody EmotionReqDto emotionReqDto) {
+                                                        @RequestParam("emotion") String emotion) {
+        EmotionReqDto emotionReqDto = new EmotionReqDto(emotion);
         return new RspTemplate<>(HttpStatus.OK,
                 "내 summary 제목 반환 성공",
-                memberService.getSummarysByEmotion(email,emotionReqDto));
+                memberService.getSummarysByEmotion(email, emotionReqDto));
     }
 
     @GetMapping("/process-detail")
-    public RspTemplate<ProcessDetail> getProcessDetail(@RequestBody SummaryTitleReqDto summaryTitleReqDto) {
+    public RspTemplate<ProcessDetail> getProcessDetail(@RequestParam("summaryTitle") String summaryTitle) {
+        SummaryTitleReqDto reqDto = new SummaryTitleReqDto(summaryTitle);
         return new RspTemplate<>(HttpStatus.OK,
                 "프로세스 상세정보 반환 성공",
-                memberService.getProcessDetailBySummaryTitle(summaryTitleReqDto));
+                memberService.getProcessDetailBySummaryTitle(reqDto));
     }
+
 
     @GetMapping("/name")
     public RspTemplate<MemberNameResDto> getName(@CurrentUserEmail String email) {
