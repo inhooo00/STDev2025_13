@@ -37,6 +37,9 @@ public class Processes extends BaseEntity {
     private String image;
 
     @Lob
+    private String summaryTitle;
+
+    @Lob
     private String summary;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -47,7 +50,8 @@ public class Processes extends BaseEntity {
     private Processes(Member member, Status status,
                       String emotion, String question,
                       String answer, String firstResult,
-                      String image, String summary
+                      String image, String summaryTitle,
+                      String summary
     ) {
         this.member = member;
         this.status = status;
@@ -56,11 +60,8 @@ public class Processes extends BaseEntity {
         this.answer = answer;
         this.firstResult = firstResult;
         this.image = image;
+        this.summaryTitle = summaryTitle;
         this.summary = summary;
-    }
-
-    public void updateQuestion(String question) {
-        this.question = question;
     }
 
     public void updateAnswer(String answer) {
@@ -73,6 +74,10 @@ public class Processes extends BaseEntity {
 
     public void updateImage(String image) {
         this.image = image;
+    }
+
+    public void updateSummaryTitle(String summaryTitle) {
+        this.summaryTitle = summaryTitle;
     }
 
     public void updateSummary(String summary) {

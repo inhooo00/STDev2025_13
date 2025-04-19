@@ -44,6 +44,9 @@ public class ProcessesService {
     @Value("${questions.image}")
     private String imagePrompt;
 
+    @Value("${questions.summary-title}")
+    private String summaryTitlePrompt;
+
     @Value("${questions.summary}")
     private String summaryPrompt;
 
@@ -61,6 +64,7 @@ public class ProcessesService {
                 .question(chatResponse.getResult().getOutput().getContent())
                 .answer("")
                 .firstResult("")
+                .summaryTitle("")
                 .summary("")
                 .build();
 
@@ -104,8 +108,8 @@ public class ProcessesService {
 
         process.updateImage(
                 huggingFaceImageService.generateImageBase64(
-                                aiService.translateToEnglishIfNeeded(
-                                        chatResponse.getResult().getOutput().getContent())).getBase64());
+                        aiService.translateToEnglishIfNeeded(
+                                chatResponse.getResult().getOutput().getContent())).getBase64());
 
         return new ImageResDto(process.getImage());
     }
@@ -114,6 +118,14 @@ public class ProcessesService {
     public SummaryResDto updateSummary(Long processId) {
         Processes process = processesRepository.findById(processId)
                 .orElseThrow(ProcessesNotFoundException::new);
+
+        ChatResponse chatResponseTitle = aiService.callChat(
+                "내 감정은:" + process.getEmotion() + "\n"
+                        + "내 질문은:" + process.getEmotion() + "\n"
+                        + "내 대답은:" + process.getAnswer() + "\n"
+                        + "AI의 결론은:" + process.getFirstResult() + "\n"
+                        + summaryTitlePrompt);
+        process.updateSummaryTitle(chatResponseTitle.getResult().getOutput().getContent());
 
         ChatResponse chatResponse = aiService.callChat(
                 "내 감정은:" + process.getEmotion() + "\n"
@@ -124,6 +136,6 @@ public class ProcessesService {
 
         process.updateSummary(chatResponse.getResult().getOutput().getContent());
 
-        return new SummaryResDto(process.getSummary());
+        return new SummaryResDto(process.getSummaryTitle(), process.getSummary());
     }
 }
