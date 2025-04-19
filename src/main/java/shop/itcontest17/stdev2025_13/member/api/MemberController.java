@@ -12,7 +12,7 @@ import shop.itcontest17.stdev2025_13.global.template.RspTemplate;
 import shop.itcontest17.stdev2025_13.member.api.dto.request.EmotionReqDto;
 import shop.itcontest17.stdev2025_13.member.api.dto.request.ImageReqDto;
 import shop.itcontest17.stdev2025_13.member.api.dto.response.EmotionCountResDto;
-import shop.itcontest17.stdev2025_13.member.api.dto.response.ImageResDto;
+import shop.itcontest17.stdev2025_13.member.api.dto.response.ArchiveResDto;
 import shop.itcontest17.stdev2025_13.member.api.dto.response.MemberNameResDto;
 import shop.itcontest17.stdev2025_13.member.api.dto.response.ProcessDetail;
 import shop.itcontest17.stdev2025_13.member.application.MemberService;
@@ -32,12 +32,12 @@ public class MemberController implements MemberDocs{
                 memberService.getTop5EmotionsByEmail(email));
     }
 
-    @GetMapping("/my-images")
-    public RspTemplate<List<ImageResDto>> getMyImages(@CurrentUserEmail String email,
-                                                      @RequestBody EmotionReqDto emotionReqDto) {
+    @GetMapping("/my-summary")
+    public RspTemplate<List<ArchiveResDto>> getMyImages(@CurrentUserEmail String email,
+                                                        @RequestBody EmotionReqDto emotionReqDto) {
         return new RspTemplate<>(HttpStatus.OK,
-                "내가 생성한 이미지 반환 성공",
-                memberService.getImagesByEmotion(email,emotionReqDto));
+                "내 summary 제목 반환 성공",
+                memberService.getSummarysByEmotion(email,emotionReqDto));
     }
 
     @GetMapping("/process-detail")
