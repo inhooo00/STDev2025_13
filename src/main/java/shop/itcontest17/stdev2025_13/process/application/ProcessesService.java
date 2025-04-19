@@ -12,8 +12,10 @@ import shop.itcontest17.stdev2025_13.member.domain.repository.MemberRepository;
 import shop.itcontest17.stdev2025_13.member.exception.MemberNotFoundException;
 import shop.itcontest17.stdev2025_13.process.api.dto.request.EmotionReqDto;
 import shop.itcontest17.stdev2025_13.process.api.dto.request.GenerateQuestionReqDto;
+import shop.itcontest17.stdev2025_13.process.api.dto.request.SubmitAnswerReqDto;
 import shop.itcontest17.stdev2025_13.process.api.dto.response.EmotionResDto;
 import shop.itcontest17.stdev2025_13.process.api.dto.response.GenerateQuestionResDto;
+import shop.itcontest17.stdev2025_13.process.api.dto.response.SubmitAnswerResDto;
 import shop.itcontest17.stdev2025_13.process.domain.Processes;
 import shop.itcontest17.stdev2025_13.process.domain.repository.ProcessesRepository;
 import shop.itcontest17.stdev2025_13.process.exception.ProcessesNotFoundException;
@@ -29,6 +31,9 @@ public class ProcessesService {
 
     @Value("${questions.question}")
     private String questionPrompt;
+
+    @Value("${questions.first-result}")
+    private String firstResultPrompt;
 
     @Transactional
     public EmotionResDto saveEmotion(String email, EmotionReqDto emotionReqDto) {
@@ -59,10 +64,23 @@ public class ProcessesService {
 
         process.updateQuestion(chatResponse.getResult().getOutput().getContent());
 
-        Processes updated = processesRepository.save(process);
-
-        return new GenerateQuestionResDto(updated.getQuestion());
+        return new GenerateQuestionResDto(process.getQuestion());
     }
 
+    @Transactional
+    public SubmitAnswerResDto submitAnswer(Long processId, SubmitAnswerReqDto reqDto) {
+        Processes process = processesRepository.findById(processId)
+                .orElseThrow(ProcessesNotFoundException::new);
+
+        // 유저 답변 저장
+        process.updateAnswer(reqDto.answer());
+
+        ChatResponse chatResponse = aiService.callChat(firstResultPrompt + process.getAnswer());
+
+        // AI 답변 저장
+        process.updateFirstResult(chatResponse.getResult().getOutput().getContent());
+
+        return new SubmitAnswerResDto(process.getFirstResult());
+    }
 
 }

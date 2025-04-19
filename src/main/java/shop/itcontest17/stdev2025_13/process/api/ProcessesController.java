@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 import shop.itcontest17.stdev2025_13.global.annotation.CurrentUserEmail;
 import shop.itcontest17.stdev2025_13.global.template.RspTemplate;
 import shop.itcontest17.stdev2025_13.process.api.dto.request.EmotionReqDto;
+import shop.itcontest17.stdev2025_13.process.api.dto.request.SubmitAnswerReqDto;
 import shop.itcontest17.stdev2025_13.process.api.dto.response.EmotionResDto;
 import shop.itcontest17.stdev2025_13.process.api.dto.response.GenerateQuestionResDto;
+import shop.itcontest17.stdev2025_13.process.api.dto.response.SubmitAnswerResDto;
 import shop.itcontest17.stdev2025_13.process.application.ProcessesService;
 
 @RestController
@@ -35,5 +37,13 @@ public class ProcessesController {
         return new RspTemplate<>(HttpStatus.OK,
                 "질문 저장 성공",
                 processesService.updateQuestion(processId));
+    }
+
+    @PatchMapping("{processId}/first-result")
+    public RspTemplate<SubmitAnswerResDto> updateFirstResult(@PathVariable Long processId,
+                                                             @RequestBody SubmitAnswerReqDto submitAnswerReqDto) {
+        return new RspTemplate<>(HttpStatus.OK,
+                "ai가 반환한 결과 저장 성공",
+                processesService.submitAnswer(processId, submitAnswerReqDto));
     }
 }

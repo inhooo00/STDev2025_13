@@ -63,4 +63,19 @@ public class Processes extends BaseEntity {
         this.question = question;
     }
 
+    public void updateAnswer(String answer) {
+        this.answer = answer;
+    }
+
+    public void updateFirstResult(String firstResult) {
+        this.firstResult = firstResult;
+    }
+
+    public void updateImage(String image) {
+        this.image = image;
+    }
+
+    public void updateSummary(String summary) {
+        this.summary = summary;
+    }
 }
