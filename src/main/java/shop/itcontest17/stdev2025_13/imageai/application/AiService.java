@@ -19,7 +19,7 @@ public class AiService {
     @Value("${questions.translate}")
     private String translatePrompt;
 
-    private ChatResponse callChat(String prompt) {
+    public ChatResponse callChat(String prompt) {
         return chatClient.call(
                 new Prompt(
                         prompt,

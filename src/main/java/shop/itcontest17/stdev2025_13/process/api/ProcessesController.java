@@ -2,6 +2,7 @@ package shop.itcontest17.stdev2025_13.process.api;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,6 +12,7 @@ import shop.itcontest17.stdev2025_13.global.annotation.CurrentUserEmail;
 import shop.itcontest17.stdev2025_13.global.template.RspTemplate;
 import shop.itcontest17.stdev2025_13.process.api.dto.request.EmotionReqDto;
 import shop.itcontest17.stdev2025_13.process.api.dto.response.EmotionResDto;
+import shop.itcontest17.stdev2025_13.process.api.dto.response.GenerateQuestionResDto;
 import shop.itcontest17.stdev2025_13.process.application.ProcessesService;
 
 @RestController
@@ -28,5 +30,10 @@ public class ProcessesController {
                 processesService.saveEmotion(email, emotionReqDto));
     }
 
-
+    @PatchMapping("{processId}/question")
+    public RspTemplate<GenerateQuestionResDto> updateQuestion(@PathVariable Long processId) {
+        return new RspTemplate<>(HttpStatus.OK,
+                "질문 저장 성공",
+                processesService.updateQuestion(processId));
+    }
 }

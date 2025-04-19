@@ -5,6 +5,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,14 +24,19 @@ public class Processes extends BaseEntity {
 
     private String emotion;
 
+    @Lob
     private String question;
 
+    @Lob
     private String answer;
 
+    @Lob
     private String firstResult;
 
+    @Lob
     private String image;
 
+    @Lob
     private String summary;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -52,4 +58,9 @@ public class Processes extends BaseEntity {
         this.image = image;
         this.summary = summary;
     }
+
+    public void updateQuestion(String question) {
+        this.question = question;
+    }
+
 }
