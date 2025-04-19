@@ -34,13 +34,6 @@ public class ProcessesController implements ProcessesDocs{
                 processesService.saveEmotion(email, emotionReqDto));
     }
 
-    @PatchMapping("{processId}/question")
-    public RspTemplate<GenerateQuestionResDto> updateQuestion(@PathVariable Long processId) {
-        return new RspTemplate<>(HttpStatus.OK,
-                "질문 저장 성공",
-                processesService.updateQuestion(processId));
-    }
-
     @PatchMapping("{processId}/first-result")
     public RspTemplate<SubmitAnswerResDto> updateFirstResult(@PathVariable Long processId,
                                                              @RequestBody SubmitAnswerReqDto submitAnswerReqDto) {

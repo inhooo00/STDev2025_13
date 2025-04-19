@@ -52,11 +52,13 @@ public class ProcessesService {
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(MemberNotFoundException::new);
 
+        ChatResponse chatResponse = aiService.callChat(questionPrompt + emotionReqDto.emotion());
+
         Processes process = Processes.builder()
                 .member(member)
                 .status(Status.ACTIVE)
                 .emotion(emotionReqDto.emotion())
-                .question("")  // 또는 null
+                .question(chatResponse.getResult().getOutput().getContent())
                 .answer("")
                 .firstResult("")
                 .summary("")
@@ -64,19 +66,7 @@ public class ProcessesService {
 
         Processes saved = processesRepository.save(process);
 
-        return new EmotionResDto(saved.getEmotion(), saved.getId());
-    }
-
-    @Transactional
-    public GenerateQuestionResDto updateQuestion(Long processId) {
-        Processes process = processesRepository.findById(processId)
-                .orElseThrow(ProcessesNotFoundException::new);
-
-        ChatResponse chatResponse = aiService.callChat(questionPrompt + process.getEmotion());
-
-        process.updateQuestion(chatResponse.getResult().getOutput().getContent());
-
-        return new GenerateQuestionResDto(process.getQuestion());
+        return new EmotionResDto(saved.getEmotion(), saved.getId(), saved.getQuestion());
     }
 
     @Transactional

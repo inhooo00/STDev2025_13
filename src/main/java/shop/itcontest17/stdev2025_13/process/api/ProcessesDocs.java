@@ -6,9 +6,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import shop.itcontest17.stdev2025_13.global.annotation.CurrentUserEmail;
 import shop.itcontest17.stdev2025_13.global.template.RspTemplate;
 import shop.itcontest17.stdev2025_13.imageai.api.dto.response.ImageResDto;
 import shop.itcontest17.stdev2025_13.process.api.dto.request.EmotionReqDto;
@@ -32,17 +29,6 @@ public interface ProcessesDocs {
     RspTemplate<EmotionResDto> createProcesses(
             @Parameter(description = "로그인한 유저의 이메일(토큰에서 자동 추출)", hidden = true) String email,
             @Parameter(description = "감정 정보", required = true) EmotionReqDto emotionReqDto);
-
-    @Operation(summary = "ai 질문 생성", description = "ai가 질문을 생성합니다.",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "질문 생성 성공",
-                            content = @Content(schema = @Schema(implementation = GenerateQuestionResDto.class))),
-                    @ApiResponse(responseCode = "400", description = "잘못된 요청"),
-                    @ApiResponse(responseCode = "401", description = "인증 실패"),
-                    @ApiResponse(responseCode = "500", description = "서버 오류")
-            })
-    RspTemplate<GenerateQuestionResDto> updateQuestion(
-            @Parameter(description = "프로세스 id", required = true) Long processId);
 
     @Operation(summary = "답변을 받아서 과학적 사실 생성", description = "답변을 받앟서 과학적 사실 생성합니다.",
             responses = {
